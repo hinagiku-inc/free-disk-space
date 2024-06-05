@@ -123,56 +123,56 @@ runs:
 
         # Display initial disk space stats
 
-        AVAILABLE_INITIAL=$(getAvailableSpace)
-        AVAILABLE_ROOT_INITIAL=$(getAvailableSpace '/')
+        # AVAILABLE_INITIAL=$(getAvailableSpace)
+        # AVAILABLE_ROOT_INITIAL=$(getAvailableSpace '/')
 
-        printDH "BEFORE CLEAN-UP:"
-        echo ""
+        # printDH "BEFORE CLEAN-UP:"
+        # echo ""
 
 
         # Option: Remove Android library
 
         if [[ ${{ inputs.android }} == 'true' ]]; then
-          BEFORE=$(getAvailableSpace)
+          # BEFORE=$(getAvailableSpace)
           
           sudo rm -rf /usr/local/lib/android || true
 
-          AFTER=$(getAvailableSpace)
-          SAVED=$((AFTER-BEFORE))
-          printSavedSpace $SAVED "Android library"
+          # AFTER=$(getAvailableSpace)
+          # SAVED=$((AFTER-BEFORE))
+          # printSavedSpace $SAVED "Android library"
         fi
 
         # Option: Remove .NET runtime
 
         if [[ ${{ inputs.dotnet }} == 'true' ]]; then
-          BEFORE=$(getAvailableSpace)
+          # BEFORE=$(getAvailableSpace)
 
           # https://github.community/t/bigger-github-hosted-runners-disk-space/17267/11
           sudo rm -rf /usr/share/dotnet || true
           
-          AFTER=$(getAvailableSpace)
-          SAVED=$((AFTER-BEFORE))
+          # AFTER=$(getAvailableSpace)
+          # SAVED=$((AFTER-BEFORE))
           printSavedSpace $SAVED ".NET runtime"
         fi
 
         # Option: Remove Haskell runtime
 
         if [[ ${{ inputs.haskell }} == 'true' ]]; then
-          BEFORE=$(getAvailableSpace)
+          # BEFORE=$(getAvailableSpace)
 
           sudo rm -rf /opt/ghc || true
           sudo rm -rf /usr/local/.ghcup || true
           
-          AFTER=$(getAvailableSpace)
-          SAVED=$((AFTER-BEFORE))
-          printSavedSpace $SAVED "Haskell runtime"
+          # AFTER=$(getAvailableSpace)
+          # SAVED=$((AFTER-BEFORE))
+          # printSavedSpace $SAVED "Haskell runtime"
         fi
 
         # Option: Remove large packages
         # REF: https://github.com/apache/flink/blob/master/tools/azure-pipelines/free_disk_space.sh
 
         if [[ ${{ inputs.large-packages }} == 'true' ]]; then
-          BEFORE=$(getAvailableSpace)
+          # BEFORE=$(getAvailableSpace)
           
           sudo apt-get remove -y '^aspnetcore-.*' || echo "::warning::The command [sudo apt-get remove -y '^aspnetcore-.*'] failed to complete successfully. Proceeding..."
           sudo apt-get remove -y '^dotnet-.*' --fix-missing || echo "::warning::The command [sudo apt-get remove -y '^dotnet-.*' --fix-missing] failed to complete successfully. Proceeding..."
@@ -186,64 +186,64 @@ runs:
           sudo apt-get autoremove -y || echo "::warning::The command [sudo apt-get autoremove -y] failed to complete successfully. Proceeding..."
           sudo apt-get clean || echo "::warning::The command [sudo apt-get clean] failed to complete successfully. Proceeding..."
 
-          AFTER=$(getAvailableSpace)
-          SAVED=$((AFTER-BEFORE))
-          printSavedSpace $SAVED "Large misc. packages"
+          # AFTER=$(getAvailableSpace)
+          # SAVED=$((AFTER-BEFORE))
+          # printSavedSpace $SAVED "Large misc. packages"
         fi
 
         # Option: Remove Docker images
 
         if [[ ${{ inputs.docker-images }} == 'true' ]]; then
-          BEFORE=$(getAvailableSpace)
+          # BEFORE=$(getAvailableSpace)
 
           sudo docker image prune --all --force || true
 
-          AFTER=$(getAvailableSpace)
-          SAVED=$((AFTER-BEFORE))
-          printSavedSpace $SAVED "Docker images"
+          # AFTER=$(getAvailableSpace)
+          # SAVED=$((AFTER-BEFORE))
+          # printSavedSpace $SAVED "Docker images"
         fi
 
         # Option: Remove tool cache
         # REF: https://github.com/actions/virtual-environments/issues/2875#issuecomment-1163392159
 
         if [[ ${{ inputs.tool-cache }} == 'true' ]]; then
-          BEFORE=$(getAvailableSpace)
+          # BEFORE=$(getAvailableSpace)
 
           sudo rm -rf "$AGENT_TOOLSDIRECTORY" || true
           
-          AFTER=$(getAvailableSpace)
-          SAVED=$((AFTER-BEFORE))
-          printSavedSpace $SAVED "Tool cache"
+          #AFTER=$(getAvailableSpace)
+          #SAVED=$((AFTER-BEFORE))
+          #printSavedSpace $SAVED "Tool cache"
         fi
 
         # Option: Remove Swap storage
 
         if [[ ${{ inputs.swap-storage }} == 'true' ]]; then
-          BEFORE=$(getAvailableSpace)
+          # BEFORE=$(getAvailableSpace)
 
           sudo swapoff -a || true
           sudo rm -f /mnt/swapfile || true
           free -h
           
-          AFTER=$(getAvailableSpace)
-          SAVED=$((AFTER-BEFORE))
-          printSavedSpace $SAVED "Swap storage"
+          #AFTER=$(getAvailableSpace)
+          #SAVED=$((AFTER-BEFORE))
+          #printSavedSpace $SAVED "Swap storage"
         fi
 
 
 
         # Output saved space statistic
 
-        AVAILABLE_END=$(getAvailableSpace)
-        AVAILABLE_ROOT_END=$(getAvailableSpace '/')
+        # AVAILABLE_END=$(getAvailableSpace)
+        # AVAILABLE_ROOT_END=$(getAvailableSpace '/')
 
         echo ""
-        printDH "AFTER CLEAN-UP:"
+        # printDH "AFTER CLEAN-UP:"
 
         echo ""
         echo ""
 
         echo "/dev/root:"
-        printSavedSpace $((AVAILABLE_ROOT_END - AVAILABLE_ROOT_INITIAL))
-        echo "overall:"
-        printSavedSpace $((AVAILABLE_END - AVAILABLE_INITIAL))
+        # printSavedSpace $((AVAILABLE_ROOT_END - AVAILABLE_ROOT_INITIAL))
+        echo "overall:finish"
+        # printSavedSpace $((AVAILABLE_END - AVAILABLE_INITIAL))
